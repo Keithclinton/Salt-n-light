@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1640 700" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="vmSky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFBF3" />
+      <stop offset="55%" stop-color="#FBF3E7" />
+      <stop offset="100%" stop-color="#F3E6D2" />
+    </linearGradient>
+    <radialGradient id="vmHaze" cx="50%" cy="48%" r="55%">
+      <stop offset="0%" stop-color="#FFFBF4" stop-opacity="0.95" />
+      <stop offset="45%" stop-color="#FFFBF4" stop-opacity="0.55" />
+      <stop offset="100%" stop-color="#FFFBF4" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <rect width="1640" height="700" fill="url(#vmSky)" />
+
+  <g opacity="0.9">
+    <line x1="820" y1="-40" x2="1195.8" y2="496.7" stroke="#E0A63E" stroke-width="2.2" stroke-linecap="round" opacity="0.16" />
+    <line x1="820" y1="-40" x2="1081.8" y2="382.3" stroke="#E0A63E" stroke-width="1.2" stroke-linecap="round" opacity="0.09" />
+    <line x1="820" y1="-40" x2="1147.1" y2="560.0" stroke="#E0A63E" stroke-width="2.2" stroke-linecap="round" opacity="0.16" />
+    <line x1="820" y1="-40" x2="1004.0" y2="347.5" stroke="#E0A63E" stroke-width="1.2" stroke-linecap="round" opacity="0.09" />
+    <line x1="820" y1="-40" x2="1069.9" y2="572.3" stroke="#E0A63E" stroke-width="2.2" stroke-linecap="round" opacity="0.16" />
+    <line x1="820" y1="-40" x2="971.9" y2="401.3" stroke="#E0A63E" stroke-width="1.2" stroke-linecap="round" opacity="0.09" />
+    <line x1="820" y1="-40" x2="991.8" y2="567.2" stroke="#E0A63E" stroke-width="2.2" stroke-linecap="round" opacity="0.16" />
+    <line x1="820" y1="-40" x2="920.6" y2="410.1" stroke="#E0A63E" stroke-width="1.2" stroke-linecap="round" opacity="0.09" />
+    <line x1="820" y1="-40" x2="933.5" y2="645.3" stroke="#E0A63E" stroke-width="2.2" stroke-linecap="round" opacity="0.16" />
+    <line x1="820" y1="-40" x2="869.5" y2="415.6" stroke="#E0A63E" stroke-width="1.2" stroke-linecap="round" opacity="0.09" />
+    <line x1="820" y1="-40" x2="856.1" y2="648.4" stroke="#E0A63E" stroke-width="2.2" stroke-linecap="round" opacity="0.16" />
+    <line x1="820" y1="-40" x2="818.5" y2="391.5" stroke="#E0A63E" stroke-width="1.2" stroke-linecap="round" opacity="0.09" />
+    <line x1="820" y1="-40" x2="780.6" y2="622.9" stroke="#E0A63E" stroke-width="2.2" stroke-linecap="round" opacity="0.16" />
+    <line x1="820" y1="-40" x2="768.8" y2="402.7" stroke="#E0A63E" stroke-width="1.2" stroke-linecap="round" opacity="0.09" />
+    <line x1="820" y1="-40" x2="707.8" y2="609.5" stroke="#E0A63E" stroke-width="2.2" stroke-linecap="round" opacity="0.16" />
+    <line x1="820" y1="-40" x2="721.3" y2="387.7" stroke="#E0A63E" stroke-width="1.2" stroke-linecap="round" opacity="0.09" />
+    <line x1="820" y1="-40" x2="643.7" y2="566.8" stroke="#E0A63E" stroke-width="2.2" stroke-linecap="round" opacity="0.16" />
+    <line x1="820" y1="-40" x2="676.9" y2="366.4" stroke="#E0A63E" stroke-width="1.2" stroke-linecap="round" opacity="0.09" />
+    <line x1="820" y1="-40" x2="567.9" y2="565.6" stroke="#E0A63E" stroke-width="2.2" stroke-linecap="round" opacity="0.16" />
+    <line x1="820" y1="-40" x2="630.9" y2="351.2" stroke="#E0A63E" stroke-width="1.2" stroke-linecap="round" opacity="0.09" />
+    <line x1="820" y1="-40" x2="504.9" y2="528.5" stroke="#E0A63E" stroke-width="2.2" stroke-linecap="round" opacity="0.16" />
+    <line x1="820" y1="-40" x2="565.7" y2="363.9" stroke="#E0A63E" stroke-width="1.2" stroke-linecap="round" opacity="0.09" />
+    <line x1="820" y1="-40" x2="440.8" y2="493.6" stroke="#E0A63E" stroke-width="2.2" stroke-linecap="round" opacity="0.16" />
+    <line x1="820" y1="-40" x2="525.5" y2="328.9" stroke="#E0A63E" stroke-width="1.2" stroke-linecap="round" opacity="0.09" />
+    <line x1="820" y1="-40" x2="398.9" y2="431.0" stroke="#E0A63E" stroke-width="2.2" stroke-linecap="round" opacity="0.16" />
+    <line x1="820" y1="-40" x2="512.0" y2="268.0" stroke="#E0A63E" stroke-width="1.2" stroke-linecap="round" opacity="0.09" />
+  </g>
+
+  <rect width="1640" height="700" fill="url(#vmHaze)" />
+</svg>
