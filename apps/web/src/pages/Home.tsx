@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { BookIcon, CommunityIcon, CrossIcon, GlobeIcon } from '../components/Icons';
 import Reveal from '../components/Reveal';
 import FeedbackSection from '../components/sections/FeedbackSection';
+import GallerySection from '../components/sections/GallerySection';
 import GiveSection from '../components/sections/GiveSection';
 import { api, DevotionalEntry, UpdateEntry } from '../lib/api';
 import './Home.css';
@@ -181,6 +182,7 @@ export default function Home() {
         </section>
       )}
 
+      <GallerySection />
       <FeedbackSection />
       <GiveSection />
     </>

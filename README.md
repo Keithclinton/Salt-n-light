@@ -91,3 +91,34 @@ Visit `http://localhost:5173`. The admin panel is at `/admin/login`.
 - `/admin/login` — sign in with `ADMIN_USERNAME` / the password you hashed.
 - `/admin` — view all feedback submissions, see response count and average
   rating, and delete entries. Protected by a JWT issued on login (12h expiry).
+- Also manage **Updates** (activity news shown on the homepage) and
+  **Devotionals** from the same dashboard — these are stored in the database,
+  so posting one takes effect immediately with no redeploy.
+
+## Activity photos
+
+Photos are **static frontend assets** — they are not uploaded through the admin
+panel, because Vercel's serverless functions have no persistent filesystem.
+Changing them is a code change plus a redeploy.
+
+To add or change a photo:
+
+1. Drop the image into `apps/web/public/images/activities/`.
+2. Add an entry to the list in `apps/web/src/data/activityPhotos.ts`:
+
+   ```ts
+   { src: '/images/activities/retreat.jpg', alt: 'Youth at the annual retreat', caption: 'Youth Retreat' },
+   ```
+
+3. Delete the `placeholder-*.svg` files and their entries once real photos are in.
+4. Commit and push — Vercel redeploys automatically.
+
+The gallery renders at `/#gallery` with a click-to-enlarge lightbox (arrow keys
+to move between photos, `Esc` to close). It hides itself when the list is empty.
+
+**Compress photos before adding them.** Phone photos are often 4–8 MB each and
+will make the page crawl; aim for roughly 1600px wide and under ~300 KB.
+
+If you later want non-technical people to add photos without a redeploy, the
+upgrade path is Vercel Blob for the files plus a `Photo` table — the gallery
+would then fetch from an API instead of importing this list.

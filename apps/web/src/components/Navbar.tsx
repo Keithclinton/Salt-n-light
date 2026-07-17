@@ -28,6 +28,9 @@ export default function Navbar() {
           <a href="/" onClick={() => setOpen(false)}>
             Home
           </a>
+          <a href="/#gallery" onClick={() => setOpen(false)}>
+            Activities
+          </a>
           <a href="/#feedback" onClick={() => setOpen(false)}>
             Feedback
           </a>
