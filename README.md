@@ -107,17 +107,32 @@ To add or change a photo:
 2. Add an entry to the list in `apps/web/src/data/activityPhotos.ts`:
 
    ```ts
-   { src: '/images/activities/retreat.jpg', alt: 'Youth at the annual retreat', caption: 'Youth Retreat' },
+   { src: '/images/activities/activity-07.jpg', alt: 'Members singing during worship' },
    ```
 
-3. Delete the `placeholder-*.svg` files and their entries once real photos are in.
-4. Commit and push — Vercel redeploys automatically.
+3. Commit and push — Vercel redeploys automatically.
 
-The gallery renders at `/#gallery` with a click-to-enlarge lightbox (arrow keys
-to move between photos, `Esc` to close). It hides itself when the list is empty.
+The gallery renders at `/#gallery` as a mosaic (masonry) so photos of any shape
+appear uncropped, with a click-to-enlarge lightbox (arrow keys to move between
+photos, `Esc` to close). It hides itself when the list is empty.
 
-**Compress photos before adding them.** Phone photos are often 4–8 MB each and
-will make the page crawl; aim for roughly 1600px wide and under ~300 KB.
+There are deliberately **no captions or categories** — the photos are an
+unordered collection. `alt` text is still required: it is never shown on screen,
+but screen readers and search engines rely on it.
+
+**Resize and compress before adding.** Phone photos are often 4–8 MB and will
+make the page crawl. Aim for ~1600px wide and under ~300 KB. If a photo has a
+lot of dead space (sky, floor), crop to the subject first — it both looks better
+in the mosaic and cuts the file size. Quick way to do both:
+
+```bash
+python3 -c "
+from PIL import Image, ImageOps
+im = ImageOps.exif_transpose(Image.open('IN.jpg'))
+im.thumbnail((1600, 1600), Image.LANCZOS)
+im.convert('RGB').save('apps/web/public/images/activities/OUT.jpg',
+                       quality=82, optimize=True, progressive=True)"
+```
 
 If you later want non-technical people to add photos without a redeploy, the
 upgrade path is Vercel Blob for the files plus a `Photo` table — the gallery

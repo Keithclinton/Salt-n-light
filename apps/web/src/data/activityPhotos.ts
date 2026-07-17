@@ -1,46 +1,38 @@
 export interface ActivityPhoto {
-  /** Path relative to `apps/web/public` — e.g. `/images/activities/retreat.jpg` */
+  /** Path relative to `apps/web/public` — e.g. `/images/activities/activity-07.jpg` */
   src: string;
-  /** Describes the photo for screen readers and search engines. */
+  /** Read aloud by screen readers; never shown on screen. */
   alt: string;
-  /** Shown over the photo on hover and under it in the lightbox. */
-  caption: string;
 }
 
 /**
- * The activity gallery. To add a photo: drop the file into
- * `apps/web/public/images/activities/`, add an entry here, and redeploy.
- * The gallery section hides itself when this list is empty.
+ * The activity gallery — an unordered collection, rendered as a mosaic.
+ * To add a photo: drop the file into `apps/web/public/images/activities/`,
+ * add an entry here, and redeploy. The section hides itself when empty.
  */
 export const activityPhotos: ActivityPhoto[] = [
   {
-    src: '/images/activities/placeholder-1.svg',
-    alt: 'Placeholder for an activity photo',
-    caption: 'Sunday Gathering',
+    src: '/images/activities/activity-01.jpg',
+    alt: 'A woman singing into a microphone with her hand raised',
   },
   {
-    src: '/images/activities/placeholder-2.svg',
-    alt: 'Placeholder for an activity photo',
-    caption: 'Community Outreach',
+    src: '/images/activities/activity-02.jpg',
+    alt: 'Members seated together in conversation at a gathering',
   },
   {
-    src: '/images/activities/placeholder-3.svg',
-    alt: 'Placeholder for an activity photo',
-    caption: 'Bible Study',
+    src: '/images/activities/activity-03.jpg',
+    alt: 'A group cheering and laughing during a gathering',
   },
   {
-    src: '/images/activities/placeholder-4.svg',
-    alt: 'Placeholder for an activity photo',
-    caption: 'Worship Night',
+    src: '/images/activities/activity-04.jpg',
+    alt: 'Three members sharing a laugh together',
   },
   {
-    src: '/images/activities/placeholder-5.svg',
-    alt: 'Placeholder for an activity photo',
-    caption: 'Leadership Training',
+    src: '/images/activities/activity-05.jpg',
+    alt: 'Two members embracing and smiling for the camera',
   },
   {
-    src: '/images/activities/placeholder-6.svg',
-    alt: 'Placeholder for an activity photo',
-    caption: 'Youth Retreat',
+    src: '/images/activities/activity-06.jpg',
+    alt: 'The Salt & Light community gathered outdoors for a group photo',
   },
 ];

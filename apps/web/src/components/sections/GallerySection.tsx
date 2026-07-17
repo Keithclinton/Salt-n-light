@@ -38,6 +38,7 @@ export default function GallerySection() {
   if (activityPhotos.length === 0) return null;
 
   const active = openIndex === null ? null : activityPhotos[openIndex];
+  const activePosition = openIndex === null ? 0 : openIndex + 1;
 
   return (
     <section id="gallery" className="section gallery">
@@ -49,17 +50,17 @@ export default function GallerySection() {
           </p>
         </Reveal>
 
-        <div className="gallery__grid">
+        <div className="gallery__mosaic">
           {activityPhotos.map((photo, index) => (
             <Reveal key={photo.src} className="gallery__item" delay={(index % 3) * 90}>
               <button
                 type="button"
                 className="gallery__tile"
                 onClick={() => setOpenIndex(index)}
-                aria-label={`View larger: ${photo.caption}`}
+                aria-label={`View photo ${index + 1} of ${activityPhotos.length} larger`}
               >
                 <img src={photo.src} alt={photo.alt} loading="lazy" className="gallery__img" />
-                <span className="gallery__caption">{photo.caption}</span>
+                <span className="gallery__scrim" aria-hidden="true" />
               </button>
             </Reveal>
           ))}
@@ -71,7 +72,7 @@ export default function GallerySection() {
           className="gallery__lightbox"
           role="dialog"
           aria-modal="true"
-          aria-label={active.caption}
+          aria-label="Photo viewer"
           onClick={close}
         >
           <button type="button" className="gallery__close" onClick={close} aria-label="Close">
@@ -92,10 +93,12 @@ export default function GallerySection() {
             </button>
           )}
 
-          <figure className="gallery__figure" onClick={(e) => e.stopPropagation()}>
-            <img src={active.src} alt={active.alt} className="gallery__figure-img" />
-            <figcaption className="gallery__figure-caption">{active.caption}</figcaption>
-          </figure>
+          <img
+            src={active.src}
+            alt={active.alt}
+            className="gallery__figure-img"
+            onClick={(e) => e.stopPropagation()}
+          />
 
           {activityPhotos.length > 1 && (
             <button
@@ -110,6 +113,10 @@ export default function GallerySection() {
               &#8250;
             </button>
           )}
+
+          <span className="gallery__counter" aria-hidden="true">
+            {activePosition} / {activityPhotos.length}
+          </span>
         </div>
       )}
     </section>

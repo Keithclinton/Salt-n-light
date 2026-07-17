@@ -14,10 +14,18 @@
   max-width: 58ch;
 }
 
-.gallery__grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+/*
+ * Masonry via CSS columns: the photos are unordered and have mixed aspect
+ * ratios, so each one is shown whole rather than cropped to a fixed grid.
+ */
+.gallery__mosaic {
+  column-count: 3;
+  column-gap: 18px;
+}
+
+.gallery__item {
+  break-inside: avoid;
+  margin-bottom: 18px;
 }
 
 .gallery__tile {
@@ -25,47 +33,46 @@
   display: block;
   width: 100%;
   padding: 0;
-  border: 1px solid var(--border);
+  border: none;
   border-radius: var(--radius);
   overflow: hidden;
-  background: var(--white);
+  background: var(--navy-dark);
   box-shadow: var(--shadow-sm);
-  transition: box-shadow 0.25s var(--ease), transform 0.25s var(--ease);
+  transition: box-shadow 0.3s var(--ease), transform 0.3s var(--ease);
 }
 
 .gallery__tile:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-5px);
 }
 
 .gallery__tile:focus-visible {
-  outline: 3px solid var(--teal);
+  outline: 3px solid var(--gold);
   outline-offset: 3px;
 }
 
 .gallery__img {
   display: block;
   width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  transition: transform 0.5s var(--ease);
+  height: auto;
+  transition: transform 0.6s var(--ease), filter 0.4s var(--ease);
 }
 
 .gallery__tile:hover .gallery__img {
-  transform: scale(1.06);
+  transform: scale(1.05);
 }
 
-.gallery__caption {
+/* Warm gold wash that fades in on hover, tying the photos to the brand. */
+.gallery__scrim {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 28px 18px 14px;
-  background: linear-gradient(to top, rgba(14, 36, 56, 0.88), transparent);
-  color: var(--white);
-  font-weight: 600;
-  font-size: 0.95rem;
-  text-align: left;
+  inset: 0;
+  background: linear-gradient(to top, rgba(22, 50, 79, 0.55), rgba(224, 166, 62, 0.12) 55%, transparent);
+  opacity: 0;
+  transition: opacity 0.35s var(--ease);
+}
+
+.gallery__tile:hover .gallery__scrim {
+  opacity: 1;
 }
 
 .gallery__lightbox {
@@ -75,34 +82,31 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 16px;
   padding: 24px;
-  background: rgba(14, 36, 56, 0.92);
+  background: rgba(14, 36, 56, 0.94);
+  backdrop-filter: blur(4px);
   animation: fadeUp 0.25s var(--ease) both;
-}
-
-.gallery__figure {
-  margin: 0;
-  max-width: min(900px, 100%);
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
 }
 
 .gallery__figure-img {
   display: block;
-  width: 100%;
-  max-height: 78vh;
+  max-width: min(1100px, 100%);
+  max-height: 86vh;
   object-fit: contain;
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow-lg);
 }
 
-.gallery__figure-caption {
+.gallery__counter {
+  position: absolute;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
   color: var(--cream);
-  text-align: center;
-  font-family: var(--font-display);
-  font-size: 1.1rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  opacity: 0.75;
 }
 
 .gallery__close {
@@ -117,7 +121,7 @@
   color: var(--cream);
   font-size: 1.8rem;
   line-height: 1;
-  transition: background 0.2s var(--ease);
+  transition: background 0.2s var(--ease), color 0.2s var(--ease);
 }
 
 .gallery__nav {
@@ -130,7 +134,7 @@
   color: var(--cream);
   font-size: 2rem;
   line-height: 1;
-  transition: background 0.2s var(--ease);
+  transition: background 0.2s var(--ease), color 0.2s var(--ease);
 }
 
 .gallery__close:hover,
@@ -146,14 +150,14 @@
 }
 
 @media (max-width: 900px) {
-  .gallery__grid {
-    grid-template-columns: repeat(2, 1fr);
+  .gallery__mosaic {
+    column-count: 2;
   }
 }
 
 @media (max-width: 640px) {
-  .gallery__grid {
-    grid-template-columns: 1fr;
+  .gallery__mosaic {
+    column-count: 1;
   }
 
   .gallery__nav {
