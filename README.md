@@ -14,8 +14,8 @@ apps/
   web/    React + Vite frontend (pages: Home, Feedback, Admin login, Admin dashboard)
   api/    NestJS API (feedback CRUD + admin JWT auth), Prisma schema
 api/
-  index.ts  Serverless entry that boots the NestJS app for Vercel
-vercel.json  Routes /api/* to the NestJS function, everything else to the SPA
+  [[...path]].ts  Serverless catch-all that boots NestJS for Vercel
+vercel.json  Builds the SPA + API function, routes non-/api paths to the SPA
 ```
 
 Brand colors extracted from the banner artwork are defined as CSS variables in
@@ -42,6 +42,8 @@ cp apps/web/.env.example apps/web/.env
 `apps/api/.env`:
 - `DATABASE_URL` — a PostgreSQL connection string (e.g. [Neon](https://neon.tech),
   [Supabase](https://supabase.com), or Vercel Postgres — all have free tiers).
+- `DATABASE_URL_UNPOOLED` — the direct (non-pooled) connection string, used only
+  for migrations. Locally, set it to the same value as `DATABASE_URL`.
 - `JWT_SECRET` — any long random string.
 - `ADMIN_USERNAME` — the admin login username.
 - `ADMIN_PASSWORD_HASH` — a bcrypt hash of the admin password. Generate one with:
@@ -55,11 +57,23 @@ cp apps/web/.env.example apps/web/.env
 
 ## 3. Set up the database
 
+If you don't already have a Postgres to point at, run one locally with Docker:
+
+```bash
+docker run -d --name saltlight-pg -p 5432:5432 \
+  -e POSTGRES_USER=saltlight -e POSTGRES_PASSWORD=devpass -e POSTGRES_DB=saltlight \
+  postgres:16-alpine
+```
+
+Then set both `DATABASE_URL` and `DATABASE_URL_UNPOOLED` in `apps/api/.env` to
+`postgresql://saltlight:devpass@localhost:5432/saltlight?schema=public` and run:
+
 ```bash
 npm run prisma:migrate --workspace apps/api
 ```
 
-This creates the `Feedback` table using `apps/api/prisma/schema.prisma`.
+This creates the `Feedback`, `Update`, and `Devotional` tables from
+`apps/api/prisma/schema.prisma`.
 
 ## 4. Run locally
 
@@ -74,17 +88,50 @@ Visit `http://localhost:5173`. The admin panel is at `/admin/login`.
 
 ## 5. Deploy to Vercel
 
-1. Push this repo to GitHub and import it in Vercel.
-2. Vercel will read `vercel.json`, building the React app as static output and
-   the NestJS app (`api/index.ts`) as a serverless function.
-3. In the Vercel project settings, add the same environment variables from
-   `apps/api/.env` (`DATABASE_URL`, `JWT_SECRET`, `ADMIN_USERNAME`,
-   `ADMIN_PASSWORD_HASH`, `CORS_ORIGIN` set to your production domain).
-4. Run `npx prisma migrate deploy` (with `DATABASE_URL` pointed at your
-   production database) once before/after the first deploy to create the
-   schema.
-5. Deploy. The site, feedback form, and `/admin` panel are all served from the
-   same domain — no separate API URL needed (`VITE_API_URL` can stay blank).
+The whole project deploys as **one** Vercel project: the React app as static
+output, and the NestJS API as a single serverless function
+(`api/[[...path]].ts`, a catch-all so every `/api/*` route reaches Nest).
+
+### 5a. Project settings (do this first)
+
+In **Settings → Build & Deployment**:
+
+- **Root Directory** must be `./` (the repo root). If it points at `apps/api`,
+  Vercel builds the API alone, ignores `vercel.json`, and fails with
+  *"No Output Directory named public found"*.
+- Leave **Build Command** and **Output Directory** on default so `vercel.json`
+  controls them.
+
+### 5b. Database
+
+Add Postgres from **Storage → Create Database → Neon**. The integration injects
+`DATABASE_URL` (pooled) and `DATABASE_URL_UNPOOLED` (direct) into the project
+automatically — both are required:
+
+- Queries run through the **pooled** URL. Serverless opens a connection per
+  invocation, and a direct connection would exhaust Postgres' connection limit.
+- Migrations run through the **unpooled** URL (`directUrl` in the schema);
+  migrations cannot run through a pooler.
+
+### 5c. Remaining environment variables
+
+Add these yourself under **Settings → Environment Variables**:
+
+| Variable | Value |
+| --- | --- |
+| `JWT_SECRET` | A long random string — generate a **new** one, don't reuse the local value |
+| `ADMIN_USERNAME` | The admin login username |
+| `ADMIN_PASSWORD_HASH` | bcrypt hash from `npm run hash-password --workspace apps/api -- "your-password"` |
+| `CORS_ORIGIN` | Your production domain, e.g. `https://your-site.vercel.app` |
+
+### 5d. Deploy
+
+Push to GitHub and Vercel builds automatically. `vercel-build` runs
+`prisma generate` → `prisma migrate deploy` → `vite build`, so the production
+schema is created and kept in sync on every deploy — there is no separate
+migration step to remember.
+
+`VITE_API_URL` can stay blank: the site and API share one domain.
 
 ## Admin panel
 

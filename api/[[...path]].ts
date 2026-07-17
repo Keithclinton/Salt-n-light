@@ -7,6 +7,9 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { AppModule } from '../apps/api/src/app.module';
 
 const server = express();
+
+// Cached across invocations that reuse a warm lambda, so Nest and the Prisma
+// connection pool are built once rather than per request.
 let bootstrapped: Promise<void> | null = null;
 
 async function bootstrap() {
@@ -25,9 +28,18 @@ async function bootstrap() {
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (!bootstrapped) {
-    bootstrapped = bootstrap();
+  try {
+    if (!bootstrapped) {
+      bootstrapped = bootstrap();
+    }
+    await bootstrapped;
+  } catch (err) {
+    // Reset so the next request retries instead of reusing a broken lambda.
+    bootstrapped = null;
+    console.error('Nest bootstrap failed', err);
+    res.status(500).json({ message: 'Internal server error' });
+    return;
   }
-  await bootstrapped;
+
   server(req, res);
 }
