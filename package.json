@@ -19,6 +19,7 @@
     "build:api": "npm run build --workspace apps/api",
     "prisma:generate": "npm run prisma:generate --workspace apps/api",
     "prisma:migrate": "npm run prisma:migrate --workspace apps/api",
-    "vercel-build": "npm run build:web && npm run prisma:generate"
+    "prisma:deploy": "npm run prisma:deploy --workspace apps/api",
+    "vercel-build": "npm run prisma:generate && npm run prisma:deploy && npm run build:web"
   }
 }

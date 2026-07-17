@@ -1,10 +1,17 @@
 generator client {
   provider = "prisma-client-js"
+  // rhel-openssl-3.0.x is the engine Vercel's Node runtime needs. Without it the
+  // deployed function fails at runtime with "Query engine binary not found".
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  // Pooled connection: serverless opens a connection per invocation and would
+  // otherwise exhaust Postgres' connection limit.
+  url       = env("DATABASE_URL")
+  // Migrations must not go through the pooler.
+  directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
 model Feedback {
