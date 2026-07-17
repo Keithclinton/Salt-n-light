@@ -166,6 +166,14 @@ export default function Home() {
             <div className="updates__grid">
               {updates.map((update, index) => (
                 <Reveal key={update.id} className="card updates__card" delay={index * 90}>
+                  {update.imageUrl && (
+                    <img
+                      src={update.imageUrl}
+                      alt={`Poster for ${update.title}`}
+                      className="updates__poster"
+                      loading="lazy"
+                    />
+                  )}
                   <span className="updates__date">
                     {new Date(update.createdAt).toLocaleDateString(undefined, {
                       month: 'short',

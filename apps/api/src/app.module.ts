@@ -5,6 +5,7 @@ import { FeedbackModule } from './feedback/feedback.module';
 import { AuthModule } from './auth/auth.module';
 import { UpdatesModule } from './updates/updates.module';
 import { DevotionalsModule } from './devotionals/devotionals.module';
+import { UploadsModule } from './uploads/uploads.module';
 import { AppController } from './app.controller';
 
 @Module({
@@ -15,6 +16,7 @@ import { AppController } from './app.controller';
     AuthModule,
     UpdatesModule,
     DevotionalsModule,
+    UploadsModule,
   ],
   controllers: [AppController],
 })

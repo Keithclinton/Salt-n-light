@@ -142,6 +142,29 @@ migration step to remember.
   **Devotionals** from the same dashboard — these are stored in the database,
   so posting one takes effect immediately with no redeploy.
 
+## Update posters
+
+Each update can carry an optional poster image. Unlike the activity gallery,
+these are **uploaded from the admin panel** — no code change, no redeploy.
+
+Setup (once): in Vercel, **Storage → Create Database → Blob**. Connect it to the
+project and it injects `BLOB_READ_WRITE_TOKEN` automatically. Without that
+token, posting an update still works; only the poster upload fails.
+
+How it works: the browser asks `POST /api/uploads` (admin JWT required) for a
+short-lived upload token, then sends the file **straight to Vercel Blob**. The
+file never passes through the API function, so the 4.5 MB serverless request
+body limit does not apply. The returned URL is saved as `Update.imageUrl`.
+
+Constraints, enforced on both sides:
+
+- JPG, PNG, WEBP or GIF, max 8 MB.
+- `imageUrl` is validated against `*.blob.vercel-storage.com`, so a stolen admin
+  token cannot point the homepage at an arbitrary third-party image.
+
+To upload posters while developing locally, copy `BLOB_READ_WRITE_TOKEN` from
+the Blob store's `.env.local` tab into `apps/api/.env`.
+
 ## Activity photos
 
 Photos are **static frontend assets** — they are not uploaded through the admin

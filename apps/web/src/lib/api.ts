@@ -54,12 +54,14 @@ export interface UpdateEntry {
   id: string;
   title: string;
   body: string;
+  imageUrl: string | null;
   createdAt: string;
 }
 
 export interface CreateUpdateInput {
   title: string;
   body: string;
+  imageUrl?: string;
 }
 
 export interface DevotionalEntry {
@@ -74,6 +76,34 @@ export interface CreateDevotionalInput {
   reference: string;
   verseText: string;
   note?: string;
+}
+
+export const MAX_IMAGE_BYTES = 8 * 1024 * 1024;
+export const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+
+/**
+ * Uploads a poster straight from the browser to Vercel Blob and returns its
+ * public URL. The file never passes through the API function, so it is not
+ * bound by the serverless request body limit.
+ */
+export async function uploadImage(file: File): Promise<string> {
+  if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+    throw new ApiError('Please choose a JPG, PNG, WEBP or GIF image.', 400);
+  }
+  if (file.size > MAX_IMAGE_BYTES) {
+    throw new ApiError('That image is larger than 8MB. Please compress it first.', 400);
+  }
+
+  const token = localStorage.getItem('sl_admin_token');
+  const { upload } = await import('@vercel/blob/client');
+
+  const blob = await upload(file.name, file, {
+    access: 'public',
+    handleUploadUrl: `${API_BASE}/uploads`,
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+  });
+
+  return blob.url;
 }
 
 export const api = {

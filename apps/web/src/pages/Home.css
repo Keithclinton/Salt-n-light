@@ -211,6 +211,17 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  overflow: hidden;
+}
+
+/* Bleeds past the card's padding so the poster meets its edges. */
+.updates__poster {
+  display: block;
+  width: calc(100% + 56px);
+  margin: -28px -28px 6px;
+  max-height: 260px;
+  object-fit: cover;
+  background: var(--cream-deep);
 }
 
 .updates__card:hover {
